@@ -3,9 +3,17 @@ import { useChatStore } from '../stores/chatStore';
 import Sidebar from '../components/Sidebar';
 import ChatContainer from '../components/ChatContainer';  
 import NoChatSelected from '../components/NoChatSelected';
-
+import { useParams } from "react-router-dom";
+import { useEffect } from 'react';
 const HomePage = () => {
-  const { selectedUser } = useChatStore();
+  const { id } = useParams();
+  const { users, setSelectedUser,selectedUser } = useChatStore();
+  useEffect(() => {
+    if (id) {
+      const user = users.find((u) => u._id === id);
+      if (user) setSelectedUser(user);
+    }
+  }, [id, users]);
 
   return (
     <div className="h-screen bg-base-200 flex items-center justify-center px-4 py-10">

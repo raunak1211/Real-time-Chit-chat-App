@@ -3,11 +3,12 @@ import { useAuthStore } from "../stores/authStore";
 import { useChatStore } from "../stores/chatStore";
 import SidebarSkeleton from "./skeletons/SidebarSkeleton";
 import { Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = useChatStore();
   const { onlineUsers } = useAuthStore();
-
+  const navigate = useNavigate();
   const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
   useEffect(() => {
@@ -50,7 +51,10 @@ const Sidebar = () => {
         {filteredUsers.map((user) => (
           <button
             key={user._id}
-            onClick={() => setSelectedUser(user)}
+            onClick={() => {
+              setSelectedUser(user);
+              navigate(`/messages/${user._id}`);
+            }}
             className={`
               w-full flex items-center gap-4 px-4 py-3 rounded-xl
               transition-all duration-200 relative
